@@ -2,14 +2,14 @@ const models = require('../models');
 
 
 exports.getStudentsList = async  () => {
-    const students = await models.findAll({},{
+    const students = await models.Student.findAll({},{
         json:true
     });
     return students;
 }
 
 exports.getStudent = async (id) => {
-    const student = await models.findOne({
+    const student = await models.Student.findOne({
         id:id
     },{
         json:true
@@ -17,17 +17,22 @@ exports.getStudent = async (id) => {
     return student;
 }
 
-exports.updateStudent = async (student) => {
-    const student = await models.update({
+exports.updateStudent = async (id, student) => {
+    
+    const result = await models.Student.update(student,{
         where:{
-            id: student.id
-        },
-        fields:student
+            id: id
+        }
     });
-    return student
+    const updatedResult  = await models.Student.findOne({
+        where:{
+            id: id
+        }
+    })
+    return updatedResult
 }
 
 exports.createStudent = async (student) => {
-    const student = await models.create(student);
-    return student;
+    const result = await models.Student.create(student);
+    return result;
 }
